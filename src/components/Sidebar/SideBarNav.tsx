@@ -17,7 +17,7 @@ export function SideBarNav() {
         <NavLink
           icon={RiDashboardLine}
           color="green.500"
-          href="/dashboard"
+          href="/"
           onClick={closeSidebar}
         >
           Dashboard
