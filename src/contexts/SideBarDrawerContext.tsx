@@ -1,34 +1,53 @@
-import { createContext, ReactNode, useContext, useState } from "react";
-interface SideBarDrawerProviderData {
-    children: ReactNode;
+import {
+  ReactNode,
+  createContext,
+  useCallback,
+  useContext,
+  useState,
+} from "react";
+
+interface SideBarDrawerProviderProps {
+  children: ReactNode;
 }
 
-type SideBarDrawerContextData = {
-    isOpen: boolean;
-    SideOnOpen(): void;
-    SideOnClose(): void;
-};
+interface SideBarDrawerContextData {
+  isOpen: boolean;
+  openSidebar(): void;
+  closeSidebar(): void;
+}
 
-const SideBarDrawerContext = createContext({} as SideBarDrawerContextData);
+const SideBarDrawerContext = createContext<
+  SideBarDrawerContextData | undefined
+>(undefined);
 
-export function SideBarDrawerProvider({ children }: SideBarDrawerProviderData) {
-    const [isOpen, setIsOpen] = useState(false);
+export function SideBarDrawerProvider({
+  children,
+}: SideBarDrawerProviderProps) {
+  const [isOpen, setIsOpen] = useState(false);
 
-    function SideOnOpen() {
-        setIsOpen(true);
-    }
+  const openSidebar = useCallback(() => {
+    setIsOpen(true);
+  }, []);
 
-    function SideOnClose() {
-        setIsOpen(false);
-    }
+  const closeSidebar = useCallback(() => {
+    setIsOpen(false);
+  }, []);
 
-    return (
-        <SideBarDrawerContext.Provider value={{ isOpen, SideOnOpen, SideOnClose }}>
-            {children}
-        </SideBarDrawerContext.Provider>
+  return (
+    <SideBarDrawerContext.Provider
+      value={{ isOpen, openSidebar, closeSidebar }}
+    >
+      {children}
+    </SideBarDrawerContext.Provider>
+  );
+}
+
+export const useSidebarDrawer = (): SideBarDrawerContextData => {
+  const context = useContext(SideBarDrawerContext);
+  if (!context) {
+    throw new Error(
+      "useSidebarDrawer must be used within a SideBarDrawerProvider"
     );
-}
-
-export const useSidebarDrawer = () => useContext(SideBarDrawerContext);
-
-
+  }
+  return context;
+};
