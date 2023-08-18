@@ -12,32 +12,150 @@ import { ListTransmissions } from "../pages/private/Transmission";
 import { CreateTransmission } from "../pages/private/Transmission/CreateTransmission";
 import { EditTransmission } from "../pages/private/Transmission/EditTransmission";
 import { SignIn } from "../pages/public/SignIn";
+import PrivateRoute from "./PrivateRoute";
 
 export function AppRoutes() {
   return (
     <Routes>
-      <Route path="/" element={<Dashboard />} />
+      {/* PUBLIC */}
       <Route path="/login" element={<SignIn />} />
-      <Route path="/carros" element={<ListCars />} />
-      <Route path="/carros/cadastrar-carro" element={<CreateCar />} />
-      <Route path="/carros/editar-carro" element={<EditCar />} />
-      <Route path="/carros/editar-carro/:id" element={<EditCar />} />
-      <Route path="/carros/filtrar-marcas-carros" element={<FilterBrand />} />
+
+      {/* PRIVATE */}
+      <Route
+        path="/"
+        element={
+          <PrivateRoute>
+            <Dashboard />
+          </PrivateRoute>
+        }
+      />
+
+      <Route
+        path="/carros"
+        element={
+          <PrivateRoute>
+            <ListCars />
+          </PrivateRoute>
+        }
+      />
+
+      <Route
+        path="/carros/cadastrar-carro"
+        element={
+          <PrivateRoute>
+            <CreateCar />
+          </PrivateRoute>
+        }
+      />
+
+      <Route
+        path="/carros/editar-carro"
+        element={
+          <PrivateRoute>
+            <EditCar />
+          </PrivateRoute>
+        }
+      />
+
+      <Route
+        path="/carros/editar-carro/:id"
+        element={
+          <PrivateRoute>
+            <EditCar />
+          </PrivateRoute>
+        }
+      />
+
+      <Route
+        path="/carros/filtrar-marcas-carros"
+        element={
+          <PrivateRoute>
+            <FilterBrand />
+          </PrivateRoute>
+        }
+      />
+
       <Route
         path="/carros/filtrar-cambio-carros"
-        element={<FilterTransmission />}
+        element={
+          <PrivateRoute>
+            <FilterTransmission />
+          </PrivateRoute>
+        }
       />
-      <Route path="/marcas" element={<ListBrands />} />
-      <Route path="/marcas/cadastrar-marca" element={<CreateBrand />} />
-      <Route path="/marcas/editar-marca" element={<EditBrand />} />
-      <Route path="/marcas/editar-marca/:id" element={<EditBrand />} />
-      <Route path="/cambios" element={<ListTransmissions />} />
+
+      <Route
+        path="/marcas"
+        element={
+          <PrivateRoute>
+            <ListBrands />
+          </PrivateRoute>
+        }
+      />
+
+      <Route
+        path="/marcas/cadastrar-marca"
+        element={
+          <PrivateRoute>
+            <CreateBrand />
+          </PrivateRoute>
+        }
+      />
+
+      <Route
+        path="/marcas/editar-marca"
+        element={
+          <PrivateRoute>
+            <EditBrand />
+          </PrivateRoute>
+        }
+      />
+
+      <Route
+        path="/marcas/editar-marca/:id"
+        element={
+          <PrivateRoute>
+            <EditBrand />
+          </PrivateRoute>
+        }
+      />
+
+      <Route
+        path="/cambios"
+        element={
+          <PrivateRoute>
+            <ListTransmissions />
+          </PrivateRoute>
+        }
+      />
+
       <Route
         path="/cambios/cadastrar-cambio"
-        element={<CreateTransmission />}
+        element={
+          <PrivateRoute>
+            <CreateTransmission />
+          </PrivateRoute>
+        }
       />
-      <Route path="/cambios/editar-cambio" element={<EditTransmission />} />
-      <Route path="/cambios/editar-cambio/:id" element={<EditTransmission />} />
+
+      <Route
+        path="/cambios/editar-cambio"
+        element={
+          <PrivateRoute>
+            <EditTransmission />
+          </PrivateRoute>
+        }
+      />
+
+      <Route
+        path="/cambios/editar-cambio/:id"
+        element={
+          <PrivateRoute>
+            <EditTransmission />
+          </PrivateRoute>
+        }
+      />
+
       <Route path="*" element={<Navigate to="/" />} />
     </Routes>
   );

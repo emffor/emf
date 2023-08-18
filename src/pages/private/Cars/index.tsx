@@ -8,6 +8,7 @@ import {
   Flex,
   Heading,
   Icon,
+  Stack,
   Table,
   Tbody,
   Th,
@@ -19,9 +20,7 @@ import {
 import { RiAddLine, RiFilter2Fill } from "react-icons/ri";
 import { Empty } from "../../../components/Empty";
 import { Loading } from "../../../components/Form/Loading";
-import { Header } from "../../../components/Header";
 import { Pagination } from "../../../components/Pagination";
-import { Sidebar } from "../../../components/Sidebar";
 import { ICarDTO } from "../../../dtos/ICarDTO";
 import { Environment } from "../../../environment";
 import { TableCar } from "./TableCar";
@@ -84,183 +83,172 @@ export function ListCars() {
   }
 
   return (
-    <Box>
-      <Header />
+    <Stack>
+      {isLoading ? (
+        <Box w={"100%"} h={"60vh"}>
+          <Loading />
+        </Box>
+      ) : (
+        <Box flex="1" borderRadius={8} bg="gray.50" p="8">
+          <Flex mb="8" justify="space-between" align="center">
+            <Heading size={"md"} fontWeight="500">
+              Lista de Carros
+            </Heading>
 
-      <Flex w="100%" my="6" maxWidth={1480} mx="auto" px="6">
-        <Sidebar />
-
-        {isLoading ? (
-          <Box w={"100%"} h={"60vh"}>
-            <Loading />
-          </Box>
-        ) : (
-          <Box flex="1" borderRadius={8} bg="gray.50" p="8">
-            <Flex mb="8" justify="space-between" align="center">
-              <Heading size={"md"} fontWeight="500">
-                Lista de Carros
-              </Heading>
-
-              <ButtonGroup>
-                {isWideVersion ? (
-                  <Button
-                    size="sm"
-                    fontSize={"sm"}
-                    colorScheme="gray"
-                    color={"gray.500"}
-                    leftIcon={<Icon as={RiFilter2Fill} fontSize="20" />}
-                    _hover={{
-                      bg: "gray.200",
-                    }}
-                    onClick={handleFilterBrands}
-                  >
-                    Filtrar por Marcas
-                  </Button>
-                ) : (
-                  <Button
-                    size="sm"
-                    fontSize={"sm"}
-                    colorScheme="gray"
-                    color={"gray.500"}
-                    _hover={{
-                      bg: "gray.200",
-                    }}
-                    onClick={handleFilterBrands}
-                  >
-                    <Icon as={RiFilter2Fill} fontSize="22" />
-                    Marcas
-                  </Button>
-                )}
-              </ButtonGroup>
-
-              <ButtonGroup>
-                {isWideVersion ? (
-                  <Button
-                    size="sm"
-                    fontSize={"sm"}
-                    colorScheme="gray"
-                    color={"gray.500"}
-                    leftIcon={<Icon as={RiFilter2Fill} fontSize="20" />}
-                    _hover={{
-                      bg: "gray.200",
-                    }}
-                    onClick={handleFilterTransmission}
-                  >
-                    Filtrar por Câmbios
-                  </Button>
-                ) : (
-                  <Button
-                    size="sm"
-                    fontSize={"sm"}
-                    colorScheme="gray"
-                    color={"gray.500"}
-                    _hover={{
-                      bg: "gray.200",
-                    }}
-                    onClick={handleFilterTransmission}
-                  >
-                    <Icon as={RiFilter2Fill} fontSize="22" />
-                    Câmbios
-                  </Button>
-                )}
-              </ButtonGroup>
-
-              <ButtonGroup>
-                {isWideVersion ? (
-                  <Button
-                    size="sm"
-                    fontSize={"sm"}
-                    colorScheme="green"
-                    leftIcon={<Icon as={RiAddLine} fontSize="20" />}
-                    _hover={{
-                      bg: "green.600",
-                    }}
-                    onClick={handleCreateCar}
-                  >
-                    Cadastrar Novo
-                  </Button>
-                ) : (
-                  <Button
-                    size="sm"
-                    fontSize={"sm"}
-                    colorScheme="green"
-                    _hover={{
-                      bg: "green.600",
-                    }}
-                    onClick={handleCreateCar}
-                  >
-                    <Icon as={RiAddLine} fontSize="22" />
-                    Novo
-                  </Button>
-                )}
-              </ButtonGroup>
-            </Flex>
-            <Table
-              colorScheme="red"
-              size="sm"
-              variant="simple"
-              color="gray.500"
-            >
-              {emptyCars === 0 ? (
-                <Empty
-                  title="Nenhum carro cadastrado"
-                  subtitle="Cadastrar Novo Carro"
-                />
+            <ButtonGroup>
+              {isWideVersion ? (
+                <Button
+                  size="sm"
+                  fontSize={"sm"}
+                  colorScheme="gray"
+                  color={"gray.500"}
+                  leftIcon={<Icon as={RiFilter2Fill} fontSize="20" />}
+                  _hover={{
+                    bg: "gray.200",
+                  }}
+                  onClick={handleFilterBrands}
+                >
+                  Filtrar por Marcas
+                </Button>
               ) : (
-                <>
-                  <Thead>
-                    <Tr>
-                      <Th px={["4", "4", "6"]} color="gray.900" width="8"></Th>
-                      <Th>Modelo</Th>
-                      <Th>Marca</Th>
-                      <Th>Tipo Câmbio</Th>
-                      {isWideVersion && <Th>Cor</Th>}
-                      {isWideVersion && <Th>Ano de Fabricação</Th>}
-                      {isWideVersion && <Th>Ano do Modelo</Th>}
-                      <Th w={"8"}></Th>
-                    </Tr>
-                  </Thead>
-
-                  <Tbody>
-                    {cars
-                      .slice(
-                        (page - 1) * Environment.LINHA_DE_LINHAS,
-                        page * Environment.LINHA_DE_LINHAS
-                      )
-                      .map((car) => {
-                        return (
-                          <TableCar
-                            key={car.id}
-                            data={car}
-                            onClickDelete={() => handleDeleteCar(car.id)}
-                            onClickEdit={() => handleEditCar()}
-                            onClickCheck={() => handleChecked(car.id)}
-                            defaultChecked={
-                              checkedCar && selectedCarId === car.id
-                                ? true
-                                : false
-                            }
-                            isChecked={
-                              checkedCar && selectedCarId === car.id
-                                ? true
-                                : false
-                            }
-                          />
-                        );
-                      })}
-                  </Tbody>
-                </>
+                <Button
+                  size="sm"
+                  fontSize={"sm"}
+                  colorScheme="gray"
+                  color={"gray.500"}
+                  _hover={{
+                    bg: "gray.200",
+                  }}
+                  onClick={handleFilterBrands}
+                >
+                  <Icon as={RiFilter2Fill} fontSize="22" />
+                  Marcas
+                </Button>
               )}
-            </Table>
+            </ButtonGroup>
 
-            <Pagination
-              totalCountOfRegisters={cars.length}
-              currentPage={page}
-              onPageChange={setPage}
-            />
-          </Box>
-        )}
-      </Flex>
-    </Box>
+            <ButtonGroup>
+              {isWideVersion ? (
+                <Button
+                  size="sm"
+                  fontSize={"sm"}
+                  colorScheme="gray"
+                  color={"gray.500"}
+                  leftIcon={<Icon as={RiFilter2Fill} fontSize="20" />}
+                  _hover={{
+                    bg: "gray.200",
+                  }}
+                  onClick={handleFilterTransmission}
+                >
+                  Filtrar por Câmbios
+                </Button>
+              ) : (
+                <Button
+                  size="sm"
+                  fontSize={"sm"}
+                  colorScheme="gray"
+                  color={"gray.500"}
+                  _hover={{
+                    bg: "gray.200",
+                  }}
+                  onClick={handleFilterTransmission}
+                >
+                  <Icon as={RiFilter2Fill} fontSize="22" />
+                  Câmbios
+                </Button>
+              )}
+            </ButtonGroup>
+
+            <ButtonGroup>
+              {isWideVersion ? (
+                <Button
+                  size="sm"
+                  fontSize={"sm"}
+                  colorScheme="green"
+                  leftIcon={<Icon as={RiAddLine} fontSize="20" />}
+                  _hover={{
+                    bg: "green.600",
+                  }}
+                  onClick={handleCreateCar}
+                >
+                  Cadastrar Novo
+                </Button>
+              ) : (
+                <Button
+                  size="sm"
+                  fontSize={"sm"}
+                  colorScheme="green"
+                  _hover={{
+                    bg: "green.600",
+                  }}
+                  onClick={handleCreateCar}
+                >
+                  <Icon as={RiAddLine} fontSize="22" />
+                  Novo
+                </Button>
+              )}
+            </ButtonGroup>
+          </Flex>
+          <Table colorScheme="red" size="sm" variant="simple" color="gray.500">
+            {emptyCars === 0 ? (
+              <Empty
+                title="Nenhum carro cadastrado"
+                subtitle="Cadastrar Novo Carro"
+              />
+            ) : (
+              <>
+                <Thead>
+                  <Tr>
+                    <Th px={["4", "4", "6"]} color="gray.900" width="8"></Th>
+                    <Th>Modelo</Th>
+                    <Th>Marca</Th>
+                    <Th>Tipo Câmbio</Th>
+                    {isWideVersion && <Th>Cor</Th>}
+                    {isWideVersion && <Th>Ano de Fabricação</Th>}
+                    {isWideVersion && <Th>Ano do Modelo</Th>}
+                    <Th w={"8"}></Th>
+                  </Tr>
+                </Thead>
+
+                <Tbody>
+                  {cars
+                    .slice(
+                      (page - 1) * Environment.LINHA_DE_LINHAS,
+                      page * Environment.LINHA_DE_LINHAS
+                    )
+                    .map((car) => {
+                      return (
+                        <TableCar
+                          key={car.id}
+                          data={car}
+                          onClickDelete={() => handleDeleteCar(car.id)}
+                          onClickEdit={() => handleEditCar()}
+                          onClickCheck={() => handleChecked(car.id)}
+                          defaultChecked={
+                            checkedCar && selectedCarId === car.id
+                              ? true
+                              : false
+                          }
+                          isChecked={
+                            checkedCar && selectedCarId === car.id
+                              ? true
+                              : false
+                          }
+                        />
+                      );
+                    })}
+                </Tbody>
+              </>
+            )}
+          </Table>
+
+          <Pagination
+            totalCountOfRegisters={cars.length}
+            currentPage={page}
+            onPageChange={setPage}
+          />
+        </Box>
+      )}
+    </Stack>
   );
 }

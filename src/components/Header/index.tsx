@@ -1,5 +1,6 @@
 import { Flex, Icon, IconButton, useBreakpointValue } from "@chakra-ui/react";
 import { RiMenuLine } from "react-icons/ri";
+import { ColorModeSwitcher } from "../../config/ColorModeSwitcher";
 import { useSidebarDrawer } from "../../contexts/SideBarDrawerContext";
 import { BannerGitHub } from "./BannerGitHub";
 import { Logo } from "./Logo";
@@ -39,6 +40,7 @@ export function Header() {
       <Logo />
 
       <BannerGitHub showProfileData={isWideVersion} />
+      <ColorModeSwitcher justifySelf="flex-end" />
     </Flex>
   );
 }

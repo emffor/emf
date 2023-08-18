@@ -15,12 +15,11 @@ import {
   HStack,
   Select,
   SimpleGrid,
+  Stack,
   VStack,
 } from "@chakra-ui/react";
 import { Input } from "../../../components/Form/Input";
 import { Loading } from "../../../components/Form/Loading";
-import { Header } from "../../../components/Header";
-import { Sidebar } from "../../../components/Sidebar";
 import { IBrandDTO } from "../../../dtos/IBrandDTO";
 import { ITransmissionDTO } from "../../../dtos/ITransmissionDTO";
 
@@ -73,123 +72,109 @@ export function CreateCar() {
   }
 
   return (
-    <Box>
-      <Header />
+    <Stack>
+      <Box flex="1" borderRadius={8} bg="gray.50" p={["6", "8"]}>
+        <Heading size="lg" fontWeight="normal">
+          Cadastrar Carro
+        </Heading>
 
-      <Flex
-        w="100%"
-        my="6"
-        maxWidth={1480}
-        mx="auto"
-        px="6"
-        as="form"
-        onSubmit={handleSubmit(handleCreateCar)}
-      >
-        <Sidebar />
+        <Divider my="6" borderColor="gray.700" />
 
-        <Box flex="1" borderRadius={8} bg="gray.50" p={["6", "8"]}>
-          <Heading size="lg" fontWeight="normal">
-            Cadastrar Carro
-          </Heading>
+        {isLoading ? (
+          <Box w={"100%"} h={"25vh"}>
+            <Loading />
+          </Box>
+        ) : (
+          <VStack>
+            <SimpleGrid minChildWidth="240px" spacing={["6", "8"]} w="100%">
+              <Input
+                label="Modelo do veículo"
+                type="text"
+                {...register("modelo")}
+                error={errors.modelo}
+              />
 
-          <Divider my="6" borderColor="gray.700" />
+              <Input
+                label="Cor do veículo"
+                type={"text"}
+                {...register("cor")}
+                error={errors.cor}
+              />
+            </SimpleGrid>
 
-          {isLoading ? (
-            <Box w={"100%"} h={"25vh"}>
-              <Loading />
-            </Box>
-          ) : (
-            <VStack>
-              <SimpleGrid minChildWidth="240px" spacing={["6", "8"]} w="100%">
-                <Input
-                  label="Modelo do veículo"
-                  type="text"
-                  {...register("modelo")}
-                  error={errors.modelo}
-                />
+            <SimpleGrid minChildWidth="240px" spacing={["6", "8"]} w="100%">
+              <Input
+                label="Ano de fabricação"
+                placeholder={`de 1920 até o ano ${year - 1}`}
+                type={"number"}
+                min={1920}
+                max={year - 1}
+                {...register("ano_fabricacao")}
+                error={errors.ano_fabricacao}
+              />
 
-                <Input
-                  label="Cor do veículo"
-                  type={"text"}
-                  {...register("cor")}
-                  error={errors.cor}
-                />
-              </SimpleGrid>
+              <Input
+                label="Ano do Modelo"
+                placeholder={`de 1920 até o ano ${year}`}
+                type={"number"}
+                min={1920}
+                max={year}
+                {...register("ano_modelo")}
+                error={errors.ano_modelo}
+              />
+            </SimpleGrid>
 
-              <SimpleGrid minChildWidth="240px" spacing={["6", "8"]} w="100%">
-                <Input
-                  label="Ano de fabricação"
-                  placeholder={`de 1920 até o ano ${year - 1}`}
-                  type={"number"}
-                  min={1920}
-                  max={year - 1}
-                  {...register("ano_fabricacao")}
-                  error={errors.ano_fabricacao}
-                />
+            <SimpleGrid minChildWidth="240px" spacing={["6", "8"]} w="100%">
+              <FormControl>
+                <FormLabel htmlFor="email">Marca do veículo</FormLabel>
+                <Select
+                  placeholder="Marca do veículo"
+                  size="lg"
+                  onChange={(event) => setSelectedBrand(event.target.value)}
+                >
+                  {brands.map((brand) => (
+                    <option key={brand.id} value={brand.id}>
+                      {brand.name}
+                    </option>
+                  ))}
+                </Select>
+              </FormControl>
 
-                <Input
-                  label="Ano do Modelo"
-                  placeholder={`de 1920 até o ano ${year}`}
-                  type={"number"}
-                  min={1920}
-                  max={year}
-                  {...register("ano_modelo")}
-                  error={errors.ano_modelo}
-                />
-              </SimpleGrid>
+              <FormControl>
+                <FormLabel htmlFor="email">Tipo de Câmbio</FormLabel>
+                <Select
+                  placeholder="Tipo de Câmbio"
+                  size="lg"
+                  onChange={(e) => setSelectedTransmission(e.target.value)}
+                >
+                  {transmissions.map((transmission) => (
+                    <option key={transmission.id} value={transmission.id}>
+                      {transmission.name}
+                    </option>
+                  ))}
+                </Select>
+              </FormControl>
+            </SimpleGrid>
+          </VStack>
+        )}
 
-              <SimpleGrid minChildWidth="240px" spacing={["6", "8"]} w="100%">
-                <FormControl>
-                  <FormLabel htmlFor="email">Marca do veículo</FormLabel>
-                  <Select
-                    placeholder="Marca do veículo"
-                    size="lg"
-                    onChange={(event) => setSelectedBrand(event.target.value)}
-                  >
-                    {brands.map((brand) => (
-                      <option key={brand.id} value={brand.id}>
-                        {brand.name}
-                      </option>
-                    ))}
-                  </Select>
-                </FormControl>
+        <Flex mt="8" justify="flex-end">
+          <HStack spacing="4">
+            <Button
+              as="a"
+              colorScheme="red"
+              color={"white"}
+              onClick={handleBack}
+            >
+              Cancelar
+            </Button>
 
-                <FormControl>
-                  <FormLabel htmlFor="email">Tipo de Câmbio</FormLabel>
-                  <Select
-                    placeholder="Tipo de Câmbio"
-                    size="lg"
-                    onChange={(e) => setSelectedTransmission(e.target.value)}
-                  >
-                    {transmissions.map((transmission) => (
-                      <option key={transmission.id} value={transmission.id}>
-                        {transmission.name}
-                      </option>
-                    ))}
-                  </Select>
-                </FormControl>
-              </SimpleGrid>
-            </VStack>
-          )}
-
-          <Flex mt="8" justify="flex-end">
-            <HStack spacing="4">
-              <Button
-                as="a"
-                colorScheme="red"
-                color={"white"}
-                onClick={handleBack}
-              >
-                Cancelar
-              </Button>
-
-              <Button colorScheme="green" type="submit">
-                Salvar
-              </Button>
-            </HStack>
-          </Flex>
-        </Box>
-      </Flex>
-    </Box>
+            <Button colorScheme="green" type="submit">
+              Salvar
+            </Button>
+          </HStack>
+        </Flex>
+      </Box>
+    </Stack>
   );
 }
