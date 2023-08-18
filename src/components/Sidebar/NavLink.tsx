@@ -1,6 +1,6 @@
 import { Box, Icon, Text } from "@chakra-ui/react";
 import { ElementType, ReactNode } from "react";
-import { NavLink as NavLik } from "react-router-dom";
+import { ActiveLink } from "./ActiveLink";
 interface Props {
   icon: ElementType; //quando passa o nome de um componente, ele já sabe que é um elemento
   children: ReactNode;
@@ -11,7 +11,7 @@ interface Props {
 
 export function NavLink({ icon, children, color, href, onClick }: Props) {
   return (
-    <NavLik to={href} onClick={onClick}>
+    <ActiveLink to={href} onClick={onClick} activeClassName="active">
       <Box
         display="flex"
         alignContent="center"
@@ -26,6 +26,6 @@ export function NavLink({ icon, children, color, href, onClick }: Props) {
           {children}{" "}
         </Text>
       </Box>
-    </NavLik>
+    </ActiveLink>
   );
 }

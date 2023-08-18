@@ -19,8 +19,6 @@ export function SideBarNav() {
           color="green.500"
           href="/dashboard"
           onClick={closeSidebar}
-          //se ativo for true, ele vai colocar o color como green.500
-          //se ativo for false, ele vai colocar o color como gray.400
         >
           Dashboard
         </NavLink>
